@@ -224,11 +224,11 @@ def seekDownloaded():
 
 
 if __name__ == '__main__':
-    ConsumerKey = 'a15dLDPZDGWFrphVPt_tEWHWY0Ua'
-    ConsumerSecret = 'WIbmopmrJXQ_pR41pzUl1CdCr_Ia'
-    credentials = (ConsumerKey, ConsumerSecret)
+    # ConsumerKey = 'a15dLDPZDGWFrphVPt_tEWHWY0Ua'
+    # ConsumerSecret = 'WIbmopmrJXQ_pR41pzUl1CdCr_Ia'
+    # credentials = (ConsumerKey, ConsumerSecret)
 
-    subprocess.call(["eumdac", 'set-credentials', ConsumerKey, ConsumerSecret])
+    # subprocess.call(["eumdac", 'set-credentials', ConsumerKey, ConsumerSecret])
     # token = eumdac.AccessToken(credentials)
     # print(token)
     # subprocess.call([".\eumdac.exe", ])
