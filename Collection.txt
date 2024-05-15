@@ -1,0 +1,103 @@
+EO:EUM:DAT:MSG:CLM-IODC - Cloud Mask - MSG - Indian Ocean
+EO:EUM:DAT:0394 - Land Surface Temperature with Directional Effects - MSG
+EO:EUM:DAT:0412 - SLSTR Level 2 Sea Surface Temperature (SST) - Sentinel-3
+EO:EUM:DAT:0237 - Poseidon-4 Altimetry Level 1B Low Resolution (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0241 - Climate-quality Advanced Microwave Radiometer Level 2 Products (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0274 - RINEX Auxiliary Data - Sentinel-6
+EO:EUM:DAT:0082 - MVIRI Level 1.5 Climate Data Record Release 1 - MFG - 63 degree
+EO:EUM:DAT:0584 - SRAL Level 1B (version BC004) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0857 - Poseidon-4 Altimetry Level 2P Low Resolution - Sentinel-6
+EO:EUM:DAT:0862 - AVHRR Fundamental Data Record - Release 1 - Multimission
+EO:EUM:DAT:0882 - MVIRI Level 1.5 Climate Data Record Release 2 - MFG - 63 degree
+EO:EUM:DAT:METOP:ASCSZF1B - ASCAT Level 1 Sigma0 Full Resolution - Metop - Global
+EO:EUM:DAT:METOP:ASCSZR1B - ASCAT Level 1 Sigma0 resampled at 12.5 km Swath Grid - Metop - Global
+EO:EUM:DAT:MSG:MSG15-RSS - Rapid Scan High Rate SEVIRI Level 1.5 Image Data - MSG
+EO:EUM:DAT:MULT:HIRSL1 - HIRS Level 1B - Metop - Global
+EO:EUM:DAT:0855 - Poseidon-4 Altimetry Level 2 High Resolution - Sentinel-6
+EO:EUM:DAT:0836 - SRAL Level 1A Unpacked L0 Complex Echoes (version BC005) - Sentinel-3 - Reprocessed
+EO:EUM:CM:METOP:ASCSZFR02 - ASCAT Level 1 SZF Climate Data Record Release 2 - Metop
+EO:EUM:DAT:0081 - MVIRI Level 1.5 Climate Data Record Release 1 - MFG - 57 degree
+EO:EUM:DAT:0398 - Fire Risk Map - Released Energy Based - MSG
+EO:EUM:DAT:0405 - Atmospheric Motion Vectors Climate Data Record Release 2 - MFG and MSG - 0 degree
+EO:EUM:DAT:0406 - SRAL Level 1B - Sentinel-3
+EO:EUM:DAT:0410 - OLCI Level 1B Reduced Resolution - Sentinel-3
+EO:EUM:DAT:0413 - SRAL Level 1A Unpacked L0 Complex echos - Sentinel-3
+EO:EUM:DAT:0415 - SRAL Level 2 Altimetry Global - Sentinel-3
+EO:EUM:DAT:0416 - SLSTR Level 2 Aerosol Optical Depth - Sentinel-3
+EO:EUM:DAT:0239 - Poseidon-4 Altimetry Level 2 Low Resolution (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0301 - GSA Level 2 Climate Data Record Release 2 - MFG - 57 degree
+EO:EUM:DAT:0617 - Optimal Cloud Analysis Climate Data Record Release 1 - MSG - 0 degree
+EO:EUM:DAT:0647 - HIRS Level 1C Fundamental Data Record Release 1 - Multimission - Global
+EO:EUM:DAT:0851 - Poseidon-4 Altimetry Level 1B High Resolution - Sentinel-6
+EO:EUM:DAT:0835 - SRAL Level 1B Stack Echoes (version BC005) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0833 - SRAL Level 1B (version BC005) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0880 - MVIRI Level 1.5 Climate Data Record Release 2 - MFG - 0 degree
+EO:EUM:DAT:0856 - Climate-quality Advanced Microwave Radiometer Level 2 Products - Sentinel-6
+EO:EUM:DAT:METOP:ASCSZO1B - ASCAT Level 1 Sigma0 resampled at 25 km Swath Grid - Metop - Global
+EO:EUM:DAT:METOP:GOMEL1 - GOME-2 Level 1B - Metop - Global
+EO:EUM:DAT:METOP:GLB-SST-NC - Global L3C AVHRR Sea Surface Temperature (GHRSST) - Metop
+EO:EUM:DAT:MSG:CLM - Cloud Mask - MSG - 0 degree
+EO:EUM:CM:METOP:ASCSZOR02 - ASCAT Level 1 SZO Climate Data Record Release 2 - Metop
+EO:EUM:CM:METOP:ASCSZRR02 - ASCAT Level 1 SZR Climate Data Record Release 2 - Metop
+EO:EUM:DAT:0088 - Land Surface Temperature Climate Data Record - MSG
+EO:EUM:DAT:0143 - Poseidon-4 Level 3 Wind/Wave Products Low Resolution in NRT - Sentinel-6
+EO:EUM:DAT:0302 - GSA Level 2 Climate Data Record Release 2 - MFG - 63 degree
+EO:EUM:DAT:0236 - Poseidon-4 Altimetry Level 1A High Resolution (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0408 - OLCI Level 2 Ocean Colour Reduced Resolution - Sentinel-3
+EO:EUM:DAT:0409 - OLCI Level 1B Full Resolution - Sentinel-3
+EO:EUM:DAT:0615 - SLSTR Level 1B Radiances and Brightness Temperatures (version BC004) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0558 - AVHRR GAC Atmospheric Motion Vectors Climate Data Record Release 2 - Multimission - Polar
+EO:EUM:DAT:METOP:OSI-150-A - ASCAT L2 25 km Winds Data Record Release 1 - Metop
+EO:EUM:DAT:METOP:OSI-150-B - ASCAT L2 12.5 km Winds Data Record Release 1 - Metop
+EO:EUM:DAT:MSG:RSS-CLM - Rapid Scan Cloud Mask - MSG
+EO:EUM:DAT:0858 - Poseidon-4 Altimetry Level 2P High Resolution - Sentinel-6
+EO:EUM:DAT:0859 - Poseidon-4 Level 3 Altimetry High Resolution - Sentinel-6
+EO:EUM:DAT:0839 - Poseidon-4 Altimetry Level 1B High Resolution (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0841 - Poseidon-4 Altimetry Level 2 High Resolution (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0834 - SRAL Level 2 Altimetry Global (version BC005) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0142 - Poseidon-4 Level 2P Wind/Wave Products Low Resolution in NRT - Sentinel-6
+EO:EUM:DAT:0238 - Poseidon-4 Altimetry Level 1B High Resolution (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0300 - GSA Level 2 Climate Data Record Release 2 - MFG and MSG - 0 degree
+EO:EUM:DAT:0407 - OLCI Level 2 Ocean Colour Full Resolution - Sentinel-3
+EO:EUM:DAT:0411 - SLSTR Level 1B Radiances and Brightness Temperatures - Sentinel-3
+EO:EUM:DAT:0417 - SLSTR Level 2 Fire Radiative Power - Sentinel 3
+EO:EUM:DAT:0374 - Commercial Radio Occultation Level 1B data - Multimission
+EO:EUM:DAT:0601 - Poseidon-4 Level 3 Altimetry Low Resolution in NTC - Sentinel-6
+EO:EUM:DAT:0556 - OLCI Level 2 Ocean Colour Full Resolution (version BC003) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0557 - OLCI Level 2 Ocean Colour Reduced Resolution (version BC003) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0576 - IASI All Sky Temperature and Humidity Profiles - Climate Data Record Release 1.1 - Metop-A and -B
+EO:EUM:DAT:0579 - Polar Multi-Sensor Aerosol Optical Properties Climate Data Record Release 1 - Metop-A and -B
+EO:EUM:DAT:0581 - SLSTR Level 1B Radiances and Brightness Temperatures (version BC003) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0583 - SRAL Level 1A Unpacked L0 Complex Echoes (version BC004) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0585 - SRAL Level 1B Stack Echoes (version BC004) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0837 - Climate-quality Advanced Microwave Radiometer Level 2 Products (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0838 - Poseidon-4 Altimetry Level 1A High Resolution (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0840 - Poseidon-4 Altimetry Level 1B Low Resolution (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0758 - IASI Principal Components Scores Fundamental Data Record Release 1 - Metop-A and -B
+EO:EUM:DAT:0881 - MVIRI Level 1.5 Climate Data Record Release 2 - MFG - 57 degree
+EO:EUM:DAT:0853 - Radio Occultation Level 1B Products - Sentinel-6
+EO:EUM:DAT:0854 - Poseidon-4 Altimetry Level 2 Low Resolution - Sentinel-6
+EO:EUM:DAT:METOP:IASIL1C-ALL - IASI Level 1C - All Spectral Samples - Metop - Global
+EO:EUM:DAT:METOP:IASSND02 - IASI Combined Sounding Products - Metop
+EO:EUM:DAT:METOP:MHSL1 - MHS Level 1B - Metop - Global
+EO:EUM:DAT:MSG:HRSEVIRI-IODC - High Rate SEVIRI Level 1.5 Image Data - MSG - Indian Ocean
+EO:EUM:DAT:MSG:HRSEVIRI - High Rate SEVIRI Level 1.5 Image Data - MSG - 0 degree
+EO:EUM:DAT:0080 - MVIRI Level 1.5 Climate Data Record Release 1 - MFG - 0 degree
+EO:EUM:DAT:0240 - Poseidon-4 Altimetry Level 2 High Resolution (baseline version F06) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:0414 - SRAL Level 1B stack echoes - Sentinel-3
+EO:EUM:DAT:0577 - OLCI Level 1B Full Resolution (version BC002) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0578 - OLCI Level 1B Reduced Resolution (version BC002) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0582 - SLSTR Level 2 Sea Surface Temperature (SST) (version BC003) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0586 - SRAL Level 2 Altimetry Global (version BC004) - Sentinel-3 - Reprocessed
+EO:EUM:DAT:0533 - GOME-2 Level 1B Fundamental Data Record Release 3 - Metop-A and -B
+EO:EUM:DAT:0645 - Global Sea Ice Concentration Interim Climate Data Record Release 3 - DMSP
+EO:EUM:DAT:0850 - Poseidon-4 Altimetry Level 1A High Resolution - Sentinel-6
+EO:EUM:DAT:0852 - Poseidon-4 Altimetry Level 1B Low Resolution - Sentinel-6
+EO:EUM:DAT:0842 - Poseidon-4 Altimetry Level 2 Low Resolution (baseline version F08) - Sentinel-6 - Reprocessed
+EO:EUM:DAT:METOP:AVHRRL1 - AVHRR Level 1B - Metop - Global
+EO:EUM:DAT:METOP:LSA-002 - Daily Land Surface Temperature - Metop
+EO:EUM:DAT:METOP:OSI-104 - ASCAT Coastal Winds at 12.5 km Swath Grid - Metop
+EO:EUM:DAT:METOP:SOMO12 - ASCAT Soil Moisture at 12.5 km Swath Grid in NRT - Metop
+EO:EUM:DAT:METOP:SOMO25 - ASCAT Soil Moisture at 25 km Swath Grid in NRT - Metop
+EO:EUM:DAT:DMSP:OSI-401-B - Global Sea Ice Concentration (netCDF) - DMSP
+EO:EUM:DAT:METOP:AMSUL1 - AMSU-A Level 1B - Metop - Global

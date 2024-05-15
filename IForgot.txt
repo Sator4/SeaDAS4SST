@@ -1,3 +1,5 @@
 source ./venv/bin/activate
 python backend/main.py
 npm run serve from frontend/frontend
+
+kill -9 $(lsof -i :5000 -t) to kill process on port 5000
