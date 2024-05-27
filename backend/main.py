@@ -10,8 +10,8 @@ import uuid
 import eumdac
 import subprocess
 import os
-import sqlite3
 import zipfile
+import xml.etree.ElementTree as ET
 import SimpleSeaDAS.OCSSW as OCSSW
 import SimpleSeaDAS.GPT as GPT
 from esa_snappy import ProductIO
@@ -26,6 +26,9 @@ db = SQLAlchemy()
 db.init_app(app)
 
 current_user = ''
+path_to_gpt = "/home/sator/SeaDAS_8.3/bin/gpt"
+path_to_ocssw = "/home/sator/SeaDAS_9.0.1/ocssw"
+cwd = '/media/sator/STORAGE/Github/Copernicus/service_vue3'
 
 
 bcrypt = Bcrypt(app)
@@ -141,12 +144,54 @@ def parseResponse(responsesTemp):
         })
     return parsed
 
+
+def parseXml(catPath, fileList):
+    parsed = []
+    for file in fileList:
+        # print(os.path.exists(catPath))
+        metadata = {}
+        tree = ET.parse(catPath + file + '/EOPMetadata.xml')
+        root = tree.getroot()
+        for elem in root.iter():
+            tag = elem.tag[elem.tag.find('}') + 1:]
+            if tag in metadata:
+                tag += '1'
+            metadata[tag] = elem.text
+
+        timeBegin = metadata['beginPosition']
+        timeEnd = metadata['endPosition']
+        satellite = metadata['shortName']
+        instrument = metadata['shortName1']
+        posList = metadata['posList']
+        id = metadata['Identifier']
+        size = metadata['size']
+        collection = metadata['parentIdentifier']
+        processLevel = str(int(metadata['processingLevel']))
+
+        parsed.append({
+            'timeBegin': timeBegin,
+            'timeEnd': timeEnd,
+            'satellite': satellite,
+            'instrument': instrument,
+            'posList': posList,
+            'id': id,
+            'size': size,
+            'collection': collection,
+            'processLevel': processLevel
+        })
+    return parsed
+
+
+
+
+
+
 def seekDownloaded():
     global downloadedFiles
     t = os.listdir('./backend/catalogue')
     downloadedFiles = []
     for file in t:
-        if file[-9:] == '.SEN3.zip':
+        if file[-5:] == '.SEN3':
             downloadedFiles.append(file)
     return
 
@@ -207,7 +252,6 @@ def index():
                     responsesFromEumetsat.append(i)
 
         else:
-            # responsesFromEumetsatRaw = subprocess.check_output(["eumdac", 'search', '-c=EO:EUM:DAT:0411', '-s', '2024-03-04T00:00', '-e', '2024-03-04T01:00'])
             responsesFromEumetsatRaw = subprocess.check_output(["eumdac", 'search', '-c', collection, '-s', 
                             post_data['text']['begin_date'], '-e', post_data['text']['end_date'], '--bbox', 
                             coords[0], coords[1], coords[2], coords[3]])
@@ -219,6 +263,7 @@ def index():
     else:
         response_object['responses'] = parseResponse(responsesFromEumetsat)
         seekDownloaded()
+        # response_object['downloaded'] = parseXml(cwd + '/backend/catalogue/', downloadedFiles)
         response_object['downloaded'] = parseResponse(downloadedFiles)
     return jsonify(response_object)
 
@@ -227,10 +272,16 @@ def index():
 # @login_required
 def download():
     response_object = {'status' : 'success'}
-    download_id = request.get_data().decode()  #[:-1]  # костыль чтобы убрать \r с конца названия
-    subprocess.run(['eumdac', 'download', '-c', collection, '-p', 
-                    download_id, '-o', './backend/catalogue'])
+    post_data = request.get_json()
+    download_id = post_data['id']
+    subprocess.run(['eumdac', 'download', '-c', collection, '-p', download_id, '-o', './backend/catalogue'])
+
+    with zipfile.ZipFile('./backend/catalogue/' + download_id + '.zip') as zip:
+        zip.extractall('./backend/catalogue/' + download_id)
+    os.remove('./backend/catalogue/' + download_id + '.zip')
+
     return jsonify(response_object)
+
 
 
 @app.route('/snapshot_manager/exit', methods=['POST'])
@@ -243,19 +294,51 @@ def exit():
     return jsonify(response_object)
 
 
-@app.route('/snapshot_manager/open', methods=['GET', 'POST'])
+@app.route('/snapshot_manager/delete', methods=['POST'])
+# @login_required
+def delete():
+    response_object = {'status' : 'success'}
+    post_data = request.get_json()
+    os.remove('./backend/catalogue/' + post_data['id'])
+    return jsonify(response_object)
+
+
+@app.route('/snapshot_master', methods=['POST'])
 # @login_required
 def master():
     response_object = {'status' : 'success'}
+    post_data = request.get_json()
+    folder_names = post_data['ids']
 
-    if request.method == 'POST':
-        post_data = request.get_json()
-        # with zipfile.ZipFile('./backend/catalogue/' + post_data['id']) as z:
-        #     with z.open('EOPMetadata.xml') as f:
-        #         for line in f:
-        #             print(line)
+    for folder_name in folder_names:
+        path_to_target = cwd + '/backend/catalogue/' + folder_name + '/' + folder_name + '/xfdumanifest.xml'
+        path_to_dest = cwd + '/backend/catalogue/Reprojected/' + folder_name
+        
+        if post_data['operation'] == 'l2gen':
+            ocssw = OCSSW(path_to_ocssw)
+            ocssw.l2gen({
+                'ifile': path_to_target,
+                'ofile': path_to_dest
+            })
 
+        elif post_data['operation'] == 'reproject':
+            gpt = GPT(path_to_gpt)
+            gpt.reproject(
+                path_to_target, 
+                path_to_dest,
+                {
+                    # 'src': 'EPSG:4326',
+                    'resampling': 'Nearest',
+                    'orientation': 0,
+                    'pixelSizeX': 0.01,
+                    'pixelSizeY': 0.01
+                }
+            )
 
+        elif post_data['operation'] == 'getFullData':
+            response_object['downloaded'] = parseXml(cwd + '/backend/catalogue/', folder_names)
+        else:
+            response_object['status'] = 'unknown operation'  
 
     return jsonify(response_object)
 
@@ -275,25 +358,7 @@ if __name__ == '__main__':
     # t = 'eumdac search -c="EO:EUM:DAT:0412" -s 2024-03-01T00:00 -e 2024-03-04T01:00'
     # print(1)
     # subprocess.call(["eumdac", 'search', '-c=EO:EUM:DAT:0411', '-s', '2024-03-01T00:00', '-e', '2024-03-04T01:00'])
-
-
-
-    # ocssw_path = "/home/sator/SeaDAS/ocssw"
-    # ocssw = OCSSW(ocssw_path)
-    # print(ocssw)
-    # ocssw.l2gen({
-    #     'ifile': '/media/sator/STORAGE/Github/Copernicus/service_vue3/backend/catalogue/S3A_OL_1_EFR____20240509T012207_20240509T012507_20240509T031808_0179_112_131_2160_MAR_O_NR_002.SEN3/xfdumanifest.xml',
-    #     'ofile': '/media/sator/STORAGE/Github/Copernicus/service_vue3/backend/catalogue/S3A_OL_2_EFR____20240509T012207_20240509T012507_20240509T031808_0179_112_131_2160_MAR_O_NR_002.SEN3/S3A_OLCI_EFR.20240509T012206.L2.OC.nc'
-    # })
-
-    path_to_gpt = "/home/sator/SeaDAS/bin/gpt"
-    path_to_target = '/media/sator/STORAGE/Github/Copernicus/service_vue3/backend/catalogue/S3B_SL_2_WST____20240321T015406_20240321T015706_20240321T035221_0179_091_060_2160_MAR_O_NR_003.SEN3/xfdumanifest.xml'
-    gpt = GPT(path_to_gpt)
-    gpt.reproject('/media/sator/STORAGE/Github/Copernicus/service_vue3/backend/catalogue/S3B_SL_2_WST____20240321T015406_20240321T015706_20240321T035221_0179_091_060_2160_MAR_O_NR_003.SEN3/xfdumanifest.xml',
-                  '/media/sator/STORAGE/Github/Copernicus/service_vue3/backend/catalogue/Reprojected/',
-              {'pixelSizeX': 0.01, 'pixelSizeY': 0.01})
-
     
 
 
-    # app.run(debug=True)
+    app.run(debug=True)

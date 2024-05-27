@@ -1,19 +1,47 @@
-from esa_snappy import ProductIO, GPF  # package to be imported is now esa_snappy instead of snappy
-import numpy as np
-import matplotlib.pyplot as plt
+import xml.etree.ElementTree as ET
+tree = ET.parse('./backend/catalogue/S3A_OL_1_EFR____20240509T012207_20240509T012507_20240509T031808_0179_112_131_2160_MAR_O_NR_002.SEN3/EOPMetadata.xml')
+root = tree.getroot()
 
 
-p = ProductIO.readProduct('/home/sator/.snap/snap-python/esa_snappy/testdata/MER_FRS_L1B_SUBSET.dim')  # package folder is now esa_snappy instead of snappy
-rad13 = p.getBand('radiance_13')
-w = rad13.getRasterWidth()
-h = rad13.getRasterHeight()
-rad13_data = np.zeros(w * h, np.float32)
-rad13.readPixels(0, 0, w, h, rad13_data)
-p.dispose()
-rad13_data.shape = h, w
-imgplot = plt.imshow(rad13_data)
-imgplot.write_png('radiance_13.png')
-plt.show()
+metadata = {}
+
+instrument, processLevel = '', ''
+
+for elem in root.iter():
+    tag = elem.tag[elem.tag.find('}') + 1:]
+    if tag in metadata:
+        tag += '1'
+    metadata[tag] = elem.text
+
+
+for tag in metadata:
+    print(tag, '::', metadata[tag])
+
+# print(metadata['posList'])
+
+
+
+
+
+
+
+
+# from esa_snappy import ProductIO, GPF  # package to be imported is now esa_snappy instead of snappy
+# import numpy as np
+# import matplotlib.pyplot as plt
+
+
+# p = ProductIO.readProduct('/home/sator/.snap/snap-python/esa_snappy/testdata/MER_FRS_L1B_SUBSET.dim')  # package folder is now esa_snappy instead of snappy
+# rad13 = p.getBand('radiance_13')
+# w = rad13.getRasterWidth()
+# h = rad13.getRasterHeight()
+# rad13_data = np.zeros(w * h, np.float32)
+# rad13.readPixels(0, 0, w, h, rad13_data)
+# p.dispose()
+# rad13_data.shape = h, w
+# imgplot = plt.imshow(rad13_data)
+# imgplot.write_png('radiance_13.png')
+# plt.show()
 
 
 # print('\n\n')
