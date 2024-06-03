@@ -1,21 +1,6 @@
-import xml.etree.ElementTree as ET
-tree = ET.parse('./backend/catalogue/S3A_OL_1_EFR____20240509T012207_20240509T012507_20240509T031808_0179_112_131_2160_MAR_O_NR_002.SEN3/EOPMetadata.xml')
-root = tree.getroot()
-
-
-metadata = {}
-
-instrument, processLevel = '', ''
-
-for elem in root.iter():
-    tag = elem.tag[elem.tag.find('}') + 1:]
-    if tag in metadata:
-        tag += '1'
-    metadata[tag] = elem.text
-
-
-for tag in metadata:
-    print(tag, '::', metadata[tag])
+import time
+time.sleep(2)
+print(222)
 
 # print(metadata['posList'])
 

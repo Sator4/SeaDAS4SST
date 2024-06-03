@@ -11,10 +11,11 @@ import eumdac
 import subprocess
 import os
 import zipfile
+import shutil
 import xml.etree.ElementTree as ET
 import SimpleSeaDAS.OCSSW as OCSSW
 import SimpleSeaDAS.GPT as GPT
-from esa_snappy import ProductIO
+# from esa_snappy import ProductIO
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -119,12 +120,20 @@ downloadedFiles = []
 
 collection = ''
 
+def subtractTime(t1, t2):  # format: yyyymmddThhmmss
+    monthsCumulative = [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+    time1 = (int(t1[:4]) * 365 + monthsCumulative[int(t1[4:6])] + int(t1[6:8])) * 86400 + int(t1[9:11]) * 3600 + int(t1[11:13]) * 60 + int(t1[13:])
+    time2 = (int(t2[:4]) * 365 + monthsCumulative[int(t2[4:6])] + int(t2[6:8])) * 86400 + int(t2[9:11]) * 3600 + int(t2[11:13]) * 60 + int(t2[13:])
+    return abs(time2 - time1)
+
+
 def parseResponse(responsesTemp):
     parsed = []
     for i in responsesTemp:
-        id, timeBegin, timeEnd, satellite, instrument, processLevel = i, '', '', '', '', ''
+        id, timeBegin, timeEnd, timeLength, satellite, instrument, processLevel = i, '', '', 0, '', '', ''
         timeBegin = i[16:20] + '-' + i[20:22] + '-' + i[22:24] + ' (' + i[25:27] + ':' + i[27:29] + ')'
         timeEnd = i[32:36] + '-' + i[36:38] + '-' + i[38:40] + ' (' + i[41:43] + ':' + i[43:45] + ')'
+        timeLength = subtractTime(i[16:31], i[32:47])
         if i[:3] == 'S3A':
             satellite = 'Sentinel-3A'
         elif i[:3] == 'S3B':
@@ -138,6 +147,7 @@ def parseResponse(responsesTemp):
             'id': id,
             'timeBegin': timeBegin,
             'timeEnd': timeEnd,
+            'timeLength': timeLength,
             'satellite': satellite,
             'instrument': instrument,
             'processLevel': processLevel
@@ -260,25 +270,30 @@ def index():
 
     elif request.method == "DELETE":
         responsesFromEumetsat = []
-    else:
-        response_object['responses'] = parseResponse(responsesFromEumetsat)
-        seekDownloaded()
-        # response_object['downloaded'] = parseXml(cwd + '/backend/catalogue/', downloadedFiles)
-        response_object['downloaded'] = parseResponse(downloadedFiles)
+    response_object['responses'] = parseResponse(responsesFromEumetsat)
+    seekDownloaded()
+    # response_object['downloaded'] = parseXml(cwd + '/backend/catalogue/', downloadedFiles)
+    response_object['downloaded'] = parseResponse(downloadedFiles)
     return jsonify(response_object)
 
 
 @app.route('/snapshot_manager/download', methods=['POST'])
 # @login_required
 def download():
+    # subprocess.run(['python3', cwd + '/backend/test.py'])
     response_object = {'status' : 'success'}
     post_data = request.get_json()
-    download_id = post_data['id']
-    subprocess.run(['eumdac', 'download', '-c', collection, '-p', download_id, '-o', './backend/catalogue'])
 
-    with zipfile.ZipFile('./backend/catalogue/' + download_id + '.zip') as zip:
-        zip.extractall('./backend/catalogue/' + download_id)
-    os.remove('./backend/catalogue/' + download_id + '.zip')
+    download_ids = [file['id'] for file in post_data['files']]
+    for download_id in download_ids:
+        path = './backend/catalogue/' + download_id
+        if os.path.exists(path):
+            return jsonify(response_object)
+        subprocess.run(['eumdac', 'download', '-c', collection, '-p', download_id, '-o', './backend/catalogue'])
+
+        with zipfile.ZipFile(path + '.zip') as zip:
+            zip.extractall(path)
+        os.remove(path + '.zip')
 
     return jsonify(response_object)
 
@@ -299,7 +314,7 @@ def exit():
 def delete():
     response_object = {'status' : 'success'}
     post_data = request.get_json()
-    os.remove('./backend/catalogue/' + post_data['id'])
+    shutil.rmtree('./backend/catalogue/' + post_data['id']['id'])
     return jsonify(response_object)
 
 
@@ -308,9 +323,10 @@ def delete():
 def master():
     response_object = {'status' : 'success'}
     post_data = request.get_json()
-    folder_names = post_data['ids']
+    folder_names = post_data['files']
 
-    for folder_name in folder_names:
+    for file in folder_names:
+        folder_name = file['id']
         path_to_target = cwd + '/backend/catalogue/' + folder_name + '/' + folder_name + '/xfdumanifest.xml'
         path_to_dest = cwd + '/backend/catalogue/Reprojected/' + folder_name
         
@@ -339,7 +355,6 @@ def master():
             response_object['downloaded'] = parseXml(cwd + '/backend/catalogue/', folder_names)
         else:
             response_object['status'] = 'unknown operation'  
-
     return jsonify(response_object)
 
 
