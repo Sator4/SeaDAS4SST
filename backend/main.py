@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, logout_user, LoginManager, login_required, current_user
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
+# from flask_sock import Sock
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError 
 import uuid
@@ -31,7 +32,7 @@ path_to_gpt = "/home/sator/SeaDAS_8.3/bin/gpt"
 path_to_ocssw = "/home/sator/SeaDAS_9.0.1/ocssw"
 cwd = '/media/sator/STORAGE/Github/Copernicus/service_vue3'
 
-
+# sock = Sock(app)
 bcrypt = Bcrypt(app)
 
 login_manager = LoginManager()
@@ -237,6 +238,7 @@ def index():
                         collection = 'EO:EUM:DAT:0409'
         
         if 'fullBox' in post_data['text']:
+            print('herehere')
             coordsCorner = [str(float(coords[0])-0.01), str(float(coords[3])), str(float(coords[0])), str(float(coords[3])+0.01)]
             responsesRaw1 = subprocess.check_output(["eumdac", 'search', '-c', collection, '-s', 
                             post_data['text']['begin_date'], '-e', post_data['text']['end_date'], '--bbox', 
@@ -285,10 +287,13 @@ def download():
     post_data = request.get_json()
 
     download_ids = [file['id'] for file in post_data['files']]
+    # download_ids = []
+
     for download_id in download_ids:
         path = './backend/catalogue/' + download_id
         if os.path.exists(path):
-            return jsonify(response_object)
+            continue
+            # return jsonify(response_object)
         subprocess.run(['eumdac', 'download', '-c', collection, '-p', download_id, '-o', './backend/catalogue'])
 
         with zipfile.ZipFile(path + '.zip') as zip:
@@ -374,6 +379,5 @@ if __name__ == '__main__':
     # print(1)
     # subprocess.call(["eumdac", 'search', '-c=EO:EUM:DAT:0411', '-s', '2024-03-01T00:00', '-e', '2024-03-04T01:00'])
     
-
 
     app.run(debug=True)
