@@ -2,3 +2,6 @@ catalogue
 instance
 database.db
 flaskr/__pycache__
+flaskr/fun.py
+flaskr/test.py
+flaskr/eumdac.exe
