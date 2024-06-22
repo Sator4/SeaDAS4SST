@@ -6,6 +6,7 @@ from flask_sock import Sock
 import subprocess
 import os
 import zipfile
+import json
 import shutil
 import SimpleSeaDAS.OCSSW as OCSSW
 import SimpleSeaDAS.GPT as GPT
@@ -84,14 +85,11 @@ def register():
 ###################### /AUTH ###########################
 
 
-collection = ''
-
 @app.route('/snapshot_manager', methods=['GET', 'POST', 'DELETE'])
 # @login_required
 def index():
     response_object = {'status' : 'success'}
     responsesFromEumetsat = []
-    global collection
     if request.method == "POST":
         responsesFromEumetsat = []
         post_data = request.get_json()
@@ -100,19 +98,7 @@ def index():
             coords = post_data['coords'].split(' ')
         if len(coords) != 4:
             coords = ['-180', '-90', '180', '90']
-        collection = 'EO:EUM:DAT:0412'
-        if post_data['satellite'] != '':
-            if post_data['satellite'] == 'Sentinel-3':
-                if post_data['instrument'] == 'SLSTR':
-                    if post_data['processLevel'] == '2':
-                        collection = 'EO:EUM:DAT:0412'
-                    elif post_data['processLevel'] == '1':
-                        collection = 'EO:EUM:DAT:0411'
-                elif post_data['instrument'] == 'OLCI':
-                    if post_data['processLevel'] == '2':
-                        collection = 'EO:EUM:DAT:0407'
-                    elif post_data['processLevel'] == '1':
-                        collection = 'EO:EUM:DAT:0409'
+        collection = getCollection(post_data)
         
         if post_data['fullBox'] != '':
             coordsCorner = [str(float(coords[0])-0.01), str(float(coords[3])), str(float(coords[0])), str(float(coords[3])+0.01)]
@@ -166,6 +152,7 @@ def download():
 
     for download_id in download_ids:
         path = cat + download_id
+        collection = getCollection((parseResponse([download_id])[0]))
         proc = subprocess.Popen(['eumdac', 'download', '-c', collection, '-p', download_id, '-o', cat], stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0)
 
         for l in proc.stdout:
@@ -198,7 +185,7 @@ def exit():
 def delete():
     response_object = {'status' : 'success'}
     post_data = request.get_json()
-    shutil.rmtree('./backend/catalogue/' + post_data['id']['id'])
+    shutil.rmtree('./backend/catalogue/' + post_data['id'])
     return jsonify(response_object)
 
 
@@ -209,7 +196,7 @@ def saveAs():
     post_data = request.get_json()
     snapshot_ids = [file['id'] for file in post_data['chosenFiles']]
     shutil.make_archive(cwd + cat + snapshot_ids[0], 'zip', cwd + cat, snapshot_ids[0])
-    return send_file('catalogue/' + snapshot_ids[0] + '.zip')
+    return send_file(cwd + cat + snapshot_ids[0] + '.zip')
 
 
 @app.route('/snapshot_master', methods=['POST'])
@@ -260,11 +247,6 @@ if __name__ == '__main__':
     # token = eumdac.AccessToken(credentials)
     # print(token)
 
-    # subprocess.call(["eumdac", "describe"])
-
-    # t = 'eumdac search -c="EO:EUM:DAT:0412" -s 2024-03-01T00:00 -e 2024-03-04T01:00'
-    # print(1)
-    # subprocess.call(["eumdac", 'search', '-c=EO:EUM:DAT:0411', '-s', '2024-03-01T00:00', '-e', '2024-03-04T01:00'])
+    # subprocess.call(["eumdac", 'search', '-c=EO:EUM:DAT:0412', '-s', '2024-03-01T00:00', '-e', '2024-03-04T01:00'])
     
-
     app.run(debug=True)

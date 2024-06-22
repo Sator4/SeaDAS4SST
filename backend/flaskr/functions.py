@@ -93,3 +93,21 @@ def zipdir(path, save_path, ziph):
             ziph.write(os.path.join(root, file), 
                        os.path.relpath(os.path.join(root, file), 
                                        os.path.join(path, '..')))
+
+
+def getCollection(params):
+    print(params)
+    collection = 'EO:EUM:DAT:0412'
+    if params['satellite'] != '':
+        if params['satellite'] == 'Sentinel-3':
+            if params['instrument'] == 'SLSTR':
+                if params['processLevel'] == '2':
+                    collection = 'EO:EUM:DAT:0412'
+                elif params['processLevel'] == '1':
+                    collection = 'EO:EUM:DAT:0411'
+            elif params['instrument'] == 'OLCI':
+                if params['processLevel'] == '2':
+                    collection = 'EO:EUM:DAT:0407'
+                elif params['processLevel'] == '1':
+                    collection = 'EO:EUM:DAT:0409'
+    return collection

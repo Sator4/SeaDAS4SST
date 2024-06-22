@@ -6,14 +6,14 @@
 		<br>
 		<br>
 
-		<input class="input" type="text" placeholder="Логин" v-model="email">
+		<input class="input" type="text" placeholder="Логин" v-model="login">
 		<input class="input" type="password" placeholder="Пароль" v-model="password">
 
 		<p v-if="errorMessage" style="color:red">{{ errorMessage }}</p>
 		<p v-if="successMessage" style="color:green">{{ successMessage }}</p>
-		<button type="button" class="btn btn-primary" @click="loginRequest({'login': email, 'password': password})">Войти</button>
+		<button type="button" class="btn btn-primary" @click="loginRequest({'login': login, 'password': password})">Войти</button>
 		<br>
-		<button type="buton" class="btn btn-secondary" @click="registerRequest({'login': email, 'password': password})">Зарегистрироваться</button>
+		<button type="buton" class="btn btn-secondary" @click="registerRequest({'login': login, 'password': password})">Зарегистрироваться</button>
 	</center>
 </template>
 
