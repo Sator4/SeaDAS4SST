@@ -18,6 +18,42 @@ npm run serve
 ```
 
 
+## Что где лежит
+
+### Бэкенд
+
+```
+backend/flaskr
+
+constants.py    - пути до рабочей директории и директорий ocssw и gpt
+db.py           - описание базы данных
+functions.py    - функции, которые удалось вынести: subtractTime, parseResponse, parseXml, seekDownloaded, getCollection
+```
+
+### Фронтенд
+
+```
+frontend/src/conponents - основная часть кода
+
+Authentication.vue - экран авторизации
+snapshot_manager - экран менеджера снимков:
+    DeleteWarning.vue - окно предупреждения об удалении
+    SearchFilters.vue - модуль фильтров поиска
+    SnapshotList.vue - модуль списка снимков
+    SnapshotManager.vue - главный модуль с основной частью логики, в который подключаются все предыдущие
+
+snapshot_master - экран мастера снимков
+    functions.js - функции operation1, sortGoodFiles
+    MasterList.vue - модуль списка снимков
+    MasterParams.vue - модуль выбора парметров преобразования
+    ProcessWarning.vue - окно подтверждения начала операции
+    SnapshotMaster.vue - главный модуль, в который подключаются все предыдущие
+
+
+frontend/src/conponents/router/stores/ChosenFilesStore.js - глобальные переменные: список файлов в мастере снимков; переменная, показывающая текущий процесс (Поиск/Скачивание/Обработка)
+
+```
+
 
 ## API
 
